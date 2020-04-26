@@ -1,5 +1,5 @@
-name: re_green
-description: ReGreen
+name: regren
+description: A new Flutter project.
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -23,6 +23,13 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
+  shifting_tabbar: ^0.3.1
+  geolocator: ^5.3.0
+  font_awesome_flutter: ^8.7.0
+  http: ^0.12.0+4
+  sorted_chips_row:
+    git:
+      url: https://github.com/callstackincubator/flutter-sorted-chips-row.git
 
 dev_dependencies:
   flutter_test:
@@ -42,7 +49,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/
+    - assets/login.png
+    - assets/logo.png
+  #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

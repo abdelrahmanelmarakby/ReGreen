@@ -15,12 +15,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void initState() {
     super.initState();
-
     loadData();
   }
 
   Future<Timer> loadData() async {
-    return Timer(Duration(seconds: 5), onDoneLoading);
+    return Timer(Duration(seconds: 2), onDoneLoading);
   }
 
   onDoneLoading() async {
@@ -31,8 +30,9 @@ class _SplashScreenState extends State<SplashScreen> {
   //Design=>
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.green,
-      child: Center(child: Image.asset('assets/logo.png')),
-    );
+        color: Color(0XFF496075),
+        child: Center(
+          child: Image.asset('assets/logo.png'),
+        ));
   }
 }
