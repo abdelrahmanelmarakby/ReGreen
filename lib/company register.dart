@@ -12,22 +12,10 @@ class comregister extends StatefulWidget {
 TextEditingController name = TextEditingController();
 TextEditingController email = TextEditingController();
 TextEditingController password = TextEditingController();
-TextEditingController item = TextEditingController();
+
 TextEditingController confirmpassword = TextEditingController();
 
 class _comregisterState extends State<comregister> {
-  List data;
-  Future<String> getData() async {
-    var response = await http.get(
-        Uri.encodeFull("http://192.168.1.13/API/index.php"),
-        headers: {"Accept": "application/json"});
-    final map = jsonDecode(response.body);
-    //data = json.decode(response.body);
-
-    print(map);
-    return "0";
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,9 +25,13 @@ class _comregisterState extends State<comregister> {
         appBar: AppBar(
           elevation: 0.0,
           title: Text(
-            'CleanPoint',
+            'C l e a n P o i n t ',
             style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 32, color: Colors.green),
+                fontWeight: FontWeight.bold,
+                fontSize: 32,
+                color: Colors.green,
+                wordSpacing: .25,
+                fontFamily: 'font'),
           ),
           centerTitle: true,
           backgroundColor: Colors.white,
@@ -213,9 +205,7 @@ class _comregisterState extends State<comregister> {
                   child: RaisedButton(
                     color: Colors.green,
                     onPressed: () async {
-                      setState(() {
-                        getData();
-                      });
+                      Login();
                       login(context);
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Request()));
@@ -239,7 +229,11 @@ class _comregisterState extends State<comregister> {
   }
 
   login(BuildContext context) async {
-    List data = await loginn(name.text, email.text, password.text, item.text);
+    List data = await loginn(
+      name.text,
+      email.text,
+      password.text,
+    );
     print(data);
     if (data.length != 0) {
       Navigator.push(
@@ -248,13 +242,28 @@ class _comregisterState extends State<comregister> {
       print("false");
     }
   }
+
+  Future<List> Login() async {
+    final response = await http.post('http://192.168.1.3/API/login.php',
+        body: {'name': name.text, 'password': password.text});
+    print(response.body);
+
+    if (response.body.contains(name.text)) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Request()));
+    }
+  }
 }
 
-Future loginn(String username, String email, String pass, String item) async {
+Future loginn(
+  String username,
+  String email,
+  String pass,
+) async {
   String url = "http://192.168.1.11/API/insert.php";
 
-  http.Response response = await http.post(url,
-      body: {'name': username, 'email': email, 'password': pass, 'item': item});
+  http.Response response = await http
+      .post(url, body: {'name': username, 'email': email, 'password': pass});
   print(response.statusCode);
   if (response.statusCode == 200) {
     return json.encode(response.body);

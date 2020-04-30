@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:regren/itemsScreen.dart';
+import 'package:regren/InputPage.dart';
 
 import 'WelcomeScreen.dart';
 
@@ -10,6 +10,8 @@ class userreigster extends StatefulWidget {
   @override
   _userreigsterState createState() => _userreigsterState();
 }
+
+TextEditingController Email = TextEditingController();
 
 class _userreigsterState extends State<userreigster> {
   TextEditingController name = TextEditingController();
@@ -48,7 +50,7 @@ class _userreigsterState extends State<userreigster> {
                   padding: const EdgeInsets.only(
                       left: 60, right: 60, bottom: 30, top: 20),
                   child: TextFormField(
-                    controller: name,
+                    controller: Email,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.green),
@@ -94,12 +96,7 @@ class _userreigsterState extends State<userreigster> {
                   child: RaisedButton(
                     color: Colors.green,
                     onPressed: () async {
-                      login() == true
-                          ? Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ItemsScreen()))
-                          : Text('error');
+                      login();
                     },
                     child: Text(
                       'Login',
@@ -149,8 +146,10 @@ class _userreigsterState extends State<userreigster> {
                                 BorderRadius.all(Radius.circular(25))),
                         fillColor: Colors.green,
                         filled: true,
+
                         //prefixText: 'username',
                         //prefixIcon:Icon(Icons.person,color: Colors.white,),
+
                         labelText: '     email',
                         labelStyle: TextStyle(color: Colors.white)),
                     style: TextStyle(
@@ -204,7 +203,6 @@ class _userreigsterState extends State<userreigster> {
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
-                        //height: 22,
                         color: Colors.lightBlueAccent),
                   ),
                 ),
@@ -238,10 +236,8 @@ class _userreigsterState extends State<userreigster> {
                     color: Colors.green,
                     onPressed: () async {
                       signup(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ItemsScreen()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => InputPage()));
                     },
                     child: Text(
                       'REGISTER',
@@ -262,7 +258,12 @@ class _userreigsterState extends State<userreigster> {
   }
 
   signup(BuildContext context) async {
-    List data = await Signup(name.text, email.text, password.text, phone.text);
+    List data = await Signup(
+      name.text,
+      email.text,
+      password.text,
+      phone.text,
+    );
     print(data);
     if (data.length != 0) {
       Navigator.push(
@@ -289,13 +290,13 @@ class _userreigsterState extends State<userreigster> {
   }
 
   Future<List> login() async {
-    final response = await http.post('http://192.168.1.13/API/login.php',
-        body: {'name': name.text, 'password': password.text});
-    print(json.encode(response.body));
-    print(jsonEncode(response.body.contains('Login Matched')));
-    if (response.body.contains('Login Matched')) {
+    final response = await http.post('http://192.168.1.3/API/login.php',
+        body: {'name': Email.text, 'password': password.text});
+    print(response.body);
+
+    if (response.body.contains(name.text)) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => ItemsScreen()));
+          context, MaterialPageRoute(builder: (context) => InputPage()));
     }
   }
 }
